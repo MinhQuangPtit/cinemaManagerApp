@@ -18,4 +18,5 @@ public class CustomerDTO {
     private String phone;
     @JsonProperty("date_of_birth")
     private Date dateOfBirth;
+    private String x;
 }
