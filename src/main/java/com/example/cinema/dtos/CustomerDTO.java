@@ -14,8 +14,11 @@ import java.util.Date;
 @NoArgsConstructor
 public class CustomerDTO {
     @NotEmpty(message = "Customer's name cannot be empty")
+
     private String name;
+
     private String phone;
+
     @JsonProperty("date_of_birth")
     private Date dateOfBirth;
     private String x;
