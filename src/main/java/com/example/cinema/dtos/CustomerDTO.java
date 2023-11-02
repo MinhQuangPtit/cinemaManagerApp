@@ -20,4 +20,5 @@ public class CustomerDTO {
     private Date dateOfBirth;
     private String x;
     private String y;
+    private String z;
 }
