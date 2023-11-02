@@ -21,4 +21,5 @@ public class CustomerDTO {
     private String x;
     private String y;
     private String z;
+    private int a;
 }
