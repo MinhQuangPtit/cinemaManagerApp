@@ -55,17 +55,20 @@ public class FilmService implements IFirmService{
         // Cập nhật đường dẫn file vào trường urlFilm
         film.setUrlVideo(videoPath);
         filmRepository.save(film);
+
     }
 
     private String saveVideo(MultipartFile file) throws IOException {
         // Lưu file vào thư mục lưu trữ (vd: /uploads)
-        String uploadDir = "/uploads/";
+        java.nio.file.Path uploadDir = Paths.get("uploads");
+        if(!Files.exists(uploadDir)){
+            Files.createDirectories(uploadDir);
+        }
         String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
-        String filePath = uploadDir + fileName;
-        Path path = Paths.get(filePath);
-        Files.createDirectories(path.getParent());
-        Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-        return filePath;
+        java.nio.file.Path destination = Paths.get(uploadDir.toString(), fileName);
+        Files.copy(file.getInputStream(), destination, StandardCopyOption.REPLACE_EXISTING);
+
+        return fileName;
     }
 
     @Override
@@ -108,6 +111,16 @@ public class FilmService implements IFirmService{
         modelMapper.map(filmDTO,newFilm);
         newFilm.setId(id);
         return filmRepository.save(newFilm);
+    }
+
+    @Override
+    public List<Film> searchByKeyWord(String keyword) {
+        List<Film> films = filmRepository.findAll();
+        List<Film> results = new ArrayList<>();
+        for(Film film : films){
+            if (film.getName().toLowerCase().contains(keyword.toLowerCase())) results.add(film);
+        }
+        return results;
     }
 
     @Override

@@ -52,6 +52,25 @@ public class FilmController {
         }
     }
 
+    @GetMapping("/search")
+    public List<Film> searchByKeyWord(
+            @RequestParam("keyword") String keyword
+    ){
+
+        return filmService.searchByKeyWord(keyword);
+    }
+
+    @GetMapping("")
+    public ResponseEntity<?> getAllFilm(
+            @RequestParam("page") int page,
+            @RequestParam("limit") int limit
+    ){
+        PageRequest pageRequest = PageRequest.of(page,limit, Sort.by("release_date").descending());
+        Page<Film> filmPage =  filmService.getAllFilms(pageRequest);
+        List<Film> films = filmPage.getContent();
+        return ResponseEntity.ok(films);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<?> getFilmById(
             @PathVariable int id
@@ -66,16 +85,6 @@ public class FilmController {
         return ResponseEntity.ok(filmService.getFilmByCategoryId(categoryId));
     }
 
-    @GetMapping("")
-    public ResponseEntity<?> getAllFilm(
-            @RequestParam("page") int page,
-            @RequestParam("limit") int limit
-    ){
-        PageRequest pageRequest = PageRequest.of(page,limit, Sort.by("release_date").descending());
-        Page<Film> filmPage =  filmService.getAllFilms(pageRequest);
-        List<Film> films = filmPage.getContent();
-        return ResponseEntity.ok(films);
-    }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateFilm(

@@ -14,6 +14,7 @@ public interface IFirmService {
     Film createFilm(FilmDTO filmDTO);
 
     void uploadFilm(MultipartFile file, int filmId) throws IOException;
+
     Page<Film> getAllFilms(PageRequest pageRequest);
 
     Film getFilmById(int id);
@@ -22,6 +23,7 @@ public interface IFirmService {
 
     Film updateFilm(int id, FilmDTO filmDTO);
 
-    void deleteFilm(int id);
+    List<Film> searchByKeyWord(String keyword);
 
+    void deleteFilm(int id);
 }

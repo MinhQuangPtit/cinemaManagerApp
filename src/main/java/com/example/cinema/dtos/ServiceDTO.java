@@ -11,6 +11,7 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class ServiceDTO {
     @NotEmpty(message = "Service's name cannot be empty")
     private String name;
