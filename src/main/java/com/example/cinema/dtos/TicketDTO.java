@@ -27,11 +27,11 @@ public class TicketDTO {
 
     @NotEmpty(message = "admin_id cannot be empty")
     @JsonProperty("admin_id")
-    private String adminId;
+    private int adminId;
 
     @NotEmpty(message = "customer_id cannot be empty")
     @JsonProperty("customer_id")
-    private String customerId;
+    private int customerId;
 
     @NotEmpty(message = "seat_code cannot be empty")
     @JsonProperty("seat_code")
@@ -46,5 +46,6 @@ public class TicketDTO {
     @JsonProperty("create_at")
     private Date createdAt;
 
+//    @NotEmpty(message = "showtime cannot be empty")
     private LocalDateTime showtime;
 }

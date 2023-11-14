@@ -47,5 +47,6 @@ public class Film {
 
 
     @OneToMany(mappedBy = "film")
+    @JsonIgnore
     private List<FilmImage> filmImages;
 }

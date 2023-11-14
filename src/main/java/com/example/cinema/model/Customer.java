@@ -1,6 +1,7 @@
 package com.example.cinema.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
@@ -29,5 +30,6 @@ public class Customer {
     private Date dateOfBirth;
 
     @OneToMany(mappedBy = "customer")
+    @JsonIgnore
     private List<Ticket> tickets;
 }

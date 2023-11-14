@@ -21,20 +21,17 @@ public class Ticket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "total_price")
-    @NotEmpty
+    @Column(name = "total_price",nullable = false)
     @Min(value = 0)
     private float totalPrice;
 
-    @Column(name = "seat_code")
-    @NotEmpty
-    private String seat_code;
+    @Column(name = "seat_code",nullable = false)
+    private String seatCode;
 
-    @Column(name = "created_at")
-    @NotEmpty
+    @Column(name = "created_at",nullable = false)
     private LocalDateTime createdAt;
 
-    @NotEmpty
+    @Column(name = "showtime",nullable = false)
     private LocalDateTime showtime;
 
     @ManyToOne

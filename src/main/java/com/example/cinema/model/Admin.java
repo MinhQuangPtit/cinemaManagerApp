@@ -1,6 +1,7 @@
 package com.example.cinema.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
@@ -44,5 +45,6 @@ public class Admin {
     private int isActive;
 
     @OneToMany(mappedBy = "admin")
+    @JsonIgnore
     private List<Ticket> tickets;
 }
