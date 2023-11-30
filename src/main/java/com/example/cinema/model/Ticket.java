@@ -43,10 +43,6 @@ public class Ticket {
     private Film film;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id",referencedColumnName = "id")
-    private Customer customer;
-
-    @ManyToOne
-    @JoinColumn(name = "admin_id",referencedColumnName = "id")
-    private Admin admin;
+    @JoinColumn(name = "user_id",referencedColumnName = "id")
+    private User user;
 }
