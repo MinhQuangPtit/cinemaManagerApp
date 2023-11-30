@@ -12,7 +12,7 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AdminDTO {
+public class UserDTO {
     @JsonProperty("user_name")
     @NotEmpty(message = "user_name cannot be empty")
     private String userName;
@@ -21,7 +21,6 @@ public class AdminDTO {
     private String password;
 
     @JsonProperty("full_name")
-    @NotEmpty(message = "full_name cannot be empty")
     private String fullName;
 
     private String phone;
@@ -31,4 +30,7 @@ public class AdminDTO {
     private Date dateOfBirth;
 
     private int isActive;
+
+    @JsonProperty("role_id")
+    private int roleId;
 }
