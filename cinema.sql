@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 20, 2023 lúc 06:11 AM
+-- Thời gian đã tạo: Th10 30, 2023 lúc 07:21 AM
 -- Phiên bản máy phục vụ: 10.4.28-MariaDB
 -- Phiên bản PHP: 8.0.28
 
@@ -20,30 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Cơ sở dữ liệu: `cinema`
 --
-
--- --------------------------------------------------------
-
---
--- Cấu trúc bảng cho bảng `admin`
---
-
-CREATE TABLE `admin` (
-  `id` int(11) NOT NULL,
-  `user_name` varchar(15) NOT NULL,
-  `password` varchar(15) NOT NULL DEFAULT '',
-  `full_name` varchar(100) NOT NULL,
-  `phone` varchar(12) NOT NULL,
-  `address` varchar(255) DEFAULT NULL,
-  `date_of_birth` date DEFAULT NULL,
-  `is_active` int(11) DEFAULT 1
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Đang đổ dữ liệu cho bảng `admin`
---
-
-INSERT INTO `admin` (`id`, `user_name`, `password`, `full_name`, `phone`, `address`, `date_of_birth`, `is_active`) VALUES
-(1, 'admin1', 'abc@1234', 'vuminhquang', '12345', '0337270210', '2000-01-01', 1);
 
 -- --------------------------------------------------------
 
@@ -127,6 +103,24 @@ CREATE TABLE `film_images` (
 -- --------------------------------------------------------
 
 --
+-- Cấu trúc bảng cho bảng `role`
+--
+
+CREATE TABLE `role` (
+  `id` int(11) NOT NULL,
+  `role_name` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `role`
+--
+
+INSERT INTO `role` (`id`, `role_name`) VALUES
+(1, 'ADMIN');
+
+-- --------------------------------------------------------
+
+--
 -- Cấu trúc bảng cho bảng `room`
 --
 
@@ -202,19 +196,8 @@ CREATE TABLE `ticket` (
   `showtime` datetime DEFAULT NULL,
   `film_id` int(11) NOT NULL,
   `room_id` int(11) NOT NULL,
-  `admin_id` int(11) NOT NULL,
-  `customer_id` int(11) NOT NULL
+  `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Đang đổ dữ liệu cho bảng `ticket`
---
-
-INSERT INTO `ticket` (`id`, `total_price`, `seat_code`, `created_at`, `showtime`, `film_id`, `room_id`, `admin_id`, `customer_id`) VALUES
-(1, 88800, '6', '2023-11-14 17:57:09', '2020-10-09 17:00:00', 1, 2, 1, 1),
-(2, 10000, '2', '2023-11-10 12:05:05', '2020-10-09 17:00:00', 1, 2, 1, 1),
-(3, 10000, '6', '2023-11-10 12:05:09', '2020-10-09 17:00:00', 1, 2, 1, 1),
-(4, 88800, '6', '2023-11-14 17:56:29', '2020-10-09 17:00:00', 1, 2, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -229,15 +212,34 @@ CREATE TABLE `ticket_service` (
   `description` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `user_account`
+--
+
+CREATE TABLE `user_account` (
+  `id` int(11) NOT NULL,
+  `user_name` varchar(50) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `full_name` varchar(100) NOT NULL,
+  `phone` varchar(12) DEFAULT NULL,
+  `address` varchar(255) DEFAULT NULL,
+  `date_of_birth` date DEFAULT NULL,
+  `is_active` int(11) DEFAULT 1,
+  `role_id` int(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `user_account`
+--
+
+INSERT INTO `user_account` (`id`, `user_name`, `password`, `full_name`, `phone`, `address`, `date_of_birth`, `is_active`, `role_id`) VALUES
+(2, 'minhquangptit', '$2a$10$SSiCVu88uT.gHqYyEKCFludYPCSZeTb2eRnydf0B1g.zjQVv2/OtK', 'Nhà A ngõ B', NULL, NULL, NULL, 0, 1);
+
 --
 -- Chỉ mục cho các bảng đã đổ
 --
-
---
--- Chỉ mục cho bảng `admin`
---
-ALTER TABLE `admin`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Chỉ mục cho bảng `categories`
@@ -266,6 +268,12 @@ ALTER TABLE `film_images`
   ADD KEY `film_id` (`film_id`);
 
 --
+-- Chỉ mục cho bảng `role`
+--
+ALTER TABLE `role`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Chỉ mục cho bảng `room`
 --
 ALTER TABLE `room`
@@ -289,8 +297,7 @@ ALTER TABLE `service`
 --
 ALTER TABLE `ticket`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `customer_id` (`customer_id`),
-  ADD KEY `admin_id` (`admin_id`),
+  ADD KEY `admin_id` (`user_id`),
   ADD KEY `film_id` (`film_id`),
   ADD KEY `room_id` (`room_id`);
 
@@ -303,14 +310,15 @@ ALTER TABLE `ticket_service`
   ADD KEY `ticket_id` (`ticket_id`);
 
 --
--- AUTO_INCREMENT cho các bảng đã đổ
+-- Chỉ mục cho bảng `user_account`
 --
+ALTER TABLE `user_account`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `role_id` (`role_id`);
 
 --
--- AUTO_INCREMENT cho bảng `admin`
+-- AUTO_INCREMENT cho các bảng đã đổ
 --
-ALTER TABLE `admin`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT cho bảng `categories`
@@ -335,6 +343,12 @@ ALTER TABLE `film`
 --
 ALTER TABLE `film_images`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT cho bảng `role`
+--
+ALTER TABLE `role`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT cho bảng `room`
@@ -367,6 +381,12 @@ ALTER TABLE `ticket_service`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT cho bảng `user_account`
+--
+ALTER TABLE `user_account`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- Các ràng buộc cho các bảng đã đổ
 --
 
@@ -392,8 +412,7 @@ ALTER TABLE `room`
 -- Các ràng buộc cho bảng `ticket`
 --
 ALTER TABLE `ticket`
-  ADD CONSTRAINT `ticket_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`),
-  ADD CONSTRAINT `ticket_ibfk_2` FOREIGN KEY (`admin_id`) REFERENCES `admin` (`id`),
+  ADD CONSTRAINT `ticket_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user_account` (`id`),
   ADD CONSTRAINT `ticket_ibfk_3` FOREIGN KEY (`film_id`) REFERENCES `film` (`id`),
   ADD CONSTRAINT `ticket_ibfk_4` FOREIGN KEY (`room_id`) REFERENCES `room` (`id`);
 
@@ -404,6 +423,12 @@ ALTER TABLE `ticket_service`
   ADD CONSTRAINT `ticket_service_ibfk_1` FOREIGN KEY (`service_id`) REFERENCES `service` (`id`),
   ADD CONSTRAINT `ticket_service_ibfk_2` FOREIGN KEY (`service_id`) REFERENCES `service` (`id`),
   ADD CONSTRAINT `ticket_service_ibfk_3` FOREIGN KEY (`ticket_id`) REFERENCES `ticket` (`id`);
+
+--
+-- Các ràng buộc cho bảng `user_account`
+--
+ALTER TABLE `user_account`
+  ADD CONSTRAINT `user_account_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
