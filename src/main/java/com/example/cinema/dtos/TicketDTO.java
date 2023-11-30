@@ -25,13 +25,9 @@ public class TicketDTO {
     @JsonProperty("room_id")
     private int roomId;
 
-    @NotEmpty(message = "admin_id cannot be empty")
-    @JsonProperty("admin_id")
-    private int adminId;
-
-    @NotEmpty(message = "customer_id cannot be empty")
-    @JsonProperty("customer_id")
-    private int customerId;
+    @NotEmpty(message = "user_id cannot be empty")
+    @JsonProperty("user_id")
+    private int userId;
 
     @NotEmpty(message = "seat_code cannot be empty")
     @JsonProperty("seat_code")

@@ -17,23 +17,16 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class TicketService implements ITicketService{
     private final TicketRepository ticketRepository;
-    private final AdminRepository adminRepository;
-    private final CustomerRepository customerRepository;
+    private final UserRepository userRepository;
     private final RoomRepository roomRepository;
     private final FilmRepository filmRepository;
 
     @Override
     public Ticket createTicket(TicketDTO ticketDTO) {
-        Optional<Admin> admin = adminRepository.findById(ticketDTO.getAdminId());
-        if(admin.isEmpty()){
-            throw new CustomException("Admin not found with id " + ticketDTO.getAdminId());
+        Optional<User> user = userRepository.findById(ticketDTO.getUserId());
+        if(user.isEmpty()){
+            throw new CustomException("Admin not found with id " + ticketDTO.getUserId());
         }
-
-        Optional<Customer> customer = customerRepository.findById(ticketDTO.getCustomerId());
-        if(customer.isEmpty()){
-            throw new CustomException("Customer not found with id " + ticketDTO.getCustomerId());
-        }
-
         Optional<Room> room = roomRepository.findById(ticketDTO.getRoomId());
         if(room.isEmpty()){
             throw new CustomException("Room not found with id " + ticketDTO.getRoomId());
@@ -45,11 +38,10 @@ public class TicketService implements ITicketService{
         }
 
         Ticket newTicket = new Ticket().builder()
-                .admin(admin.get())
+                .user(user.get())
                 .seatCode(ticketDTO.getSeatCode())
                 .film(film.get())
                 .room(room.get())
-                .customer(customer.get())
                 .showtime(ticketDTO.getShowtime())
                 .totalPrice(ticketDTO.getTotalPrice())
                 .createdAt(LocalDateTime.now())
@@ -69,7 +61,7 @@ public class TicketService implements ITicketService{
 
     @Override
     public List<Ticket> getTicketsByCustomerId(int customerId) {
-        Optional<Customer> customer = customerRepository.findById(customerId);
+        Optional<User> customer = userRepository.findById(customerId);
         if(customer.isEmpty()) throw new CustomException("Customer not found with id " + customerId);
         List<Ticket> tickets = customer.get().getTickets();
         return tickets;
@@ -82,15 +74,11 @@ public class TicketService implements ITicketService{
             throw new CustomException("Ticket not found with id " + id);
         }
 
-        Optional<Admin> admin = adminRepository.findById(ticketDTO.getAdminId());
-        if(admin.isEmpty()){
-            throw new CustomException("Admin not found with id " + ticketDTO.getAdminId());
+        Optional<User> user = userRepository.findById(ticketDTO.getUserId());
+        if(user.isEmpty()){
+            throw new CustomException("user not found with id " + ticketDTO.getUserId());
         }
 
-        Optional<Customer> customer = customerRepository.findById(ticketDTO.getCustomerId());
-        if(customer.isEmpty()){
-            throw new CustomException("Customer not found with id " + ticketDTO.getCustomerId());
-        }
 
         Optional<Room> room = roomRepository.findById(ticketDTO.getRoomId());
         if(room.isEmpty()){
@@ -104,11 +92,10 @@ public class TicketService implements ITicketService{
 
         Ticket newTicket = new Ticket().builder()
                 .id(id)
-                .admin(admin.get())
+                .user(user.get())
                 .seatCode(ticketDTO.getSeatCode())
                 .film(film.get())
                 .room(room.get())
-                .customer(customer.get())
                 .showtime(ticketDTO.getShowtime())
                 .totalPrice(ticketDTO.getTotalPrice())
                 .createdAt(LocalDateTime.now())
