@@ -24,6 +24,14 @@ import java.util.List;
 public class FilmController {
     private final FilmService filmService;
 
+    @GetMapping("/jpa")
+    public ResponseEntity<?> practiceJPA(
+            @RequestParam String name,
+            @RequestParam String description
+    ){
+        return ResponseEntity.ok(filmService.practiceJPA(name,description));
+    }
+
     @PostMapping("")
     public ResponseEntity<?> createFilm(
             @RequestBody FilmDTO filmDTO,
