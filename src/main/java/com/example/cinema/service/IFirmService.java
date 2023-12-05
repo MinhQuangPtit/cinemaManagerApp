@@ -26,6 +26,4 @@ public interface IFirmService {
     List<Film> searchByKeyWord(String keyword);
 
     void deleteFilm(int id);
-
-    List<Film> practiceJPA(String name, String description);
 }

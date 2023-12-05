@@ -131,9 +131,4 @@ public class FilmService implements IFirmService{
         }
         filmRepository.deleteById(id);
     }
-
-    @Override
-    public List<Film> practiceJPA(String name, String description) {
-        return filmRepository.findByNameContainingAndDescriptionContaining(name,description);
-    }
 }
